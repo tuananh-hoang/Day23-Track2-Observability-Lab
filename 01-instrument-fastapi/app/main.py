@@ -24,6 +24,14 @@ from instrumentation import (
     tracer,
 )
 from inference import simulate_inference, simulate_gpu_load
+import os
+from langfuse import Langfuse
+
+langfuse = Langfuse(
+  public_key=os.environ.get("LANGFUSE_PUBLIC_KEY"),
+  secret_key=os.environ.get("LANGFUSE_SECRET_KEY"),
+  host=os.environ.get("LANGFUSE_HOST")
+)
 
 
 @asynccontextmanager
@@ -89,6 +97,18 @@ def predict(req: PredictRequest) -> PredictResponse:
                 gen_span.set_attribute("gen_ai.usage.input_tokens", in_toks)
                 gen_span.set_attribute("gen_ai.usage.output_tokens", out_toks)
                 gen_span.set_attribute("gen_ai.response.finish_reason", "stop")
+
+                # LANGFUSE TRACE (BONUS B2)
+                lf_trace = langfuse.trace(name="predict_request", session_id="test_session")
+                lf_trace.generation(
+                    name="simulate_inference",
+                    model=req.model,
+                    input=req.prompt,
+                    output=text,
+                    usage={"input": in_toks, "output": out_toks},
+                    metadata={"quality_score": quality}
+                )
+                langfuse.flush()
 
             INFERENCE_REQUESTS.labels(model=req.model, status="ok").inc()
             INFERENCE_TOKENS.labels(model=req.model, direction="input").inc(in_toks)

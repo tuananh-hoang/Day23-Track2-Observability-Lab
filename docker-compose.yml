@@ -16,6 +16,9 @@ services:
       OTEL_RESOURCE_ATTRIBUTES: deployment.environment=lab,service.namespace=aicb
       OTEL_LOGS_EXPORTER: otlp
       LOG_LEVEL: INFO
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
+      LANGFUSE_HOST: ${LANGFUSE_HOST}
     depends_on:
       otel-collector:
         condition: service_started
@@ -117,6 +120,32 @@ services:
     command: ["--config=/etc/otelcol-contrib/config.yaml"]
     depends_on:
       - jaeger
+    networks: [obs]
+
+  langfuse-server:
+    image: langfuse/langfuse:2
+    container_name: day23-langfuse
+    depends_on:
+      - langfuse-db
+    ports:
+      - "127.0.0.1:3001:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@langfuse-db:5432/postgres
+      - NEXTAUTH_URL=http://localhost:3001
+      - NEXTAUTH_SECRET=mysecret
+      - SALT=mysalt
+      - TELEMETRY_ENABLED=false
+    networks: [obs]
+
+  langfuse-db:
+    image: postgres:15
+    container_name: day23-langfuse-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "127.0.0.1:5432:5432"
     networks: [obs]
 
 volumes:
