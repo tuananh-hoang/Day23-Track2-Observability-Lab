@@ -7,7 +7,9 @@ from __future__ import annotations
 import logging
 import os
 import sys
+import time
 
+import requests
 import structlog
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
@@ -64,9 +66,14 @@ def setup_otel() -> None:
         }
     )
     provider = TracerProvider(resource=resource)
-    endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://otel-collector:4317")
+    # gRPC exporter expects host:port (no http:// scheme)
+    raw_endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "otel-collector:4317")
+    # Strip http:// or https:// if present (gRPC transport adds its own)
+    grpc_endpoint = raw_endpoint.replace("http://", "").replace("https://", "")
     provider.add_span_processor(
-        BatchSpanProcessor(OTLPSpanExporter(endpoint=endpoint, insecure=True))
+        BatchSpanProcessor(
+            OTLPSpanExporter(endpoint=grpc_endpoint, insecure=True)
+        )
     )
     trace.set_tracer_provider(provider)
     # Auto-instrument FastAPI handlers (creates server spans for every route)
@@ -82,11 +89,42 @@ def _configure_logging() -> None:
         stream=sys.stdout,
         level=os.getenv("LOG_LEVEL", "INFO"),
     )
+    loki_endpoint = os.getenv("LOKI_ENDPOINT", "http://loki:3100/loki/api/v1/push")
+
+    _loki_buffer: list[dict] = []
+    _loki_lock = __import__("threading").Lock()
+
+    def _loki_processor(logger, method_name, event_dict):
+        ts_ns = str(int(time.time() * 1e9))
+        msg = event_dict.pop("event", "")
+        level = event_dict.pop("level", "info")
+        with _loki_lock:
+            _loki_buffer.append(
+                {
+                    "stream": {
+                        "app": "day23-app",
+                        "service": "inference-api",
+                        "level": level,
+                    },
+                    "values": [[ts_ns, msg]],
+                }
+            )
+        if len(_loki_buffer) >= 50 or method_name in ("error", "critical"):
+            try:
+                payload = {"streams": _loki_buffer[:50]}
+                requests.post(loki_endpoint, json=payload, timeout=2)
+                with _loki_lock:
+                    _loki_buffer[:] = _loki_buffer[50:]
+            except Exception:
+                pass
+        return event_dict
+
     structlog.configure(
         processors=[
             structlog.contextvars.merge_contextvars,
             structlog.processors.add_log_level,
             structlog.processors.TimeStamper(fmt="iso"),
+            _loki_processor,
             structlog.processors.JSONRenderer(),
         ],
         wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),

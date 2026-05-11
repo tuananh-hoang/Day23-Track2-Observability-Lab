@@ -9,7 +9,6 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
-  # Self-metrics (Prometheus-scrapeable on :8888 — see prometheus.yml)
   prometheus:
     config:
       scrape_configs:
@@ -23,23 +22,6 @@ processors:
     send_batch_size: 1024
     timeout: 5s
 
-  # Composite tail-sampling: keep all errors + slow + 1% healthy
-  tail_sampling:
-    decision_wait: 30s
-    num_traces: 50000
-    expected_new_traces_per_sec: 100
-    policies:
-      - name: keep-errors
-        type: status_code
-        status_code: { status_codes: [ERROR] }
-      - name: keep-slow
-        type: latency
-        latency: { threshold_ms: 2000 }
-      - name: probabilistic-1pct
-        type: probabilistic
-        probabilistic: { sampling_percentage: 1 }
-
-  # Add deployment env to every span/metric resource attribute
   resource:
     attributes:
       - key: deployment.environment
@@ -47,11 +29,16 @@ processors:
         action: upsert
 
 exporters:
-  # Traces → Jaeger via OTLP
   otlp/jaeger:
+    # Port 4317 = Jaeger OTLP gRPC (requires COLLECTOR_OTLP_ENABLED=true)
+    # Port 14250 = Jaeger native gRPC (model.proto) — NOT OTLP, do NOT use
     endpoint: jaeger:4317
     tls:
       insecure: true
+
+  loki/push:
+    endpoint: http://loki:3100/loki/api/v1/push
+    timeout: 5s
 
   debug:
     verbosity: basic
@@ -60,9 +47,12 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [tail_sampling, resource, batch]
+      processors: [resource, batch]
       exporters: [otlp/jaeger]
-
+    logs:
+      receivers: [otlp]
+      processors: [resource, batch]
+      exporters: [loki/push]
     metrics:
       receivers: [otlp, prometheus]
       processors: [resource, batch]
@@ -72,4 +62,9 @@ service:
     logs:
       level: warn
     metrics:
-      address: 0.0.0.0:8888
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: 0.0.0.0
+                port: 8888
