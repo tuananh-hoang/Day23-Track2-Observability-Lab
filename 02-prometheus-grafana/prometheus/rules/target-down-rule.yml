@@ -1,0 +1,64 @@
+# Action item từ Incident 03
+# Deploy: cp bonus/alert-patch/target-down-rule.yml \
+#            02-prometheus-grafana/prometheus/rules/target-down-rule.yml
+# Reload:  curl -X POST http://localhost:9090/-/reload
+
+groups:
+  - name: scrape_health
+    interval: 15s
+    rules:
+
+      - alert: TargetDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: warning
+          reason: scrape_failure
+          team: platform
+        annotations:
+          summary: "Scrape target không reach được: {{ $labels.job }}/{{ $labels.instance }}"
+          description: >
+            Prometheus không scrape được {{ $labels.instance }} (job={{ $labels.job }}).
+            KHÔNG nhất thiết nghĩa là service chết — có thể là network partition hoặc config sai.
+            Kiểm tra: (1) docker network inspect, (2) Prometheus Targets page,
+            (3) curl thủ công từ Prometheus container đến endpoint.
+          runbook_url: "bonus/postmortems/incident-03.md"
+
+      - alert: MultipleTargetsDown
+        expr: count(up == 0) by (job) > 1
+        for: 30s
+        labels:
+          severity: critical
+          reason: possible_prometheus_network_isolation
+          team: platform
+        annotations:
+          summary: "{{ $value }} targets cùng down — nghi ngờ Prometheus bị isolate"
+          description: >
+            {{ $value }} targets trong job {{ $labels.job }} cùng báo up=0.
+            Pattern này thường chỉ ra Prometheus mất network access, không phải
+            tất cả services crash đồng thời.
+            Kiểm tra: docker inspect day23-prometheus → Networks.
+
+      - alert: Watchdog
+        expr: vector(1)
+        labels:
+          severity: none
+          team: platform
+        annotations:
+          summary: "Prometheus Watchdog — heartbeat bình thường"
+          description: >
+            Alert này fire liên tục. Nếu không nhận được trong 5 phút,
+            Prometheus hoặc Alertmanager đang có vấn đề.
+
+      - alert: SlowScrape
+        expr: scrape_duration_seconds > 5
+        for: 2m
+        labels:
+          severity: warning
+          reason: scrape_latency
+          team: platform
+        annotations:
+          summary: "Scrape chậm: {{ $labels.job }} mất {{ $value | humanizeDuration }}"
+          description: >
+            Leading indicator trước khi scrape fail hẳn. Nguyên nhân có thể:
+            high cardinality, /metrics tính toán nặng, hoặc network degradation.

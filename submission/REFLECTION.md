@@ -2,9 +2,8 @@
 
 > Fill in each section. Grader reads the "What I'd change" paragraph closest.
 
-**Student:** Stephen Hoang
+**Student:** Hoàng Tuấn Anh - 2A202600075
 **Submission date:** 2026-05-11
-**Lab repo URL:** _public GitHub URL_
 
 ---
 

@@ -1,0 +1,59 @@
+[2026-05-11T12:27:30] CHAOS   === Incident 03 START ===
+[2026-05-11T12:27:30] CHAOS   Failure mode: network partition Prometheus <-> app
+[2026-05-11T12:27:30] CHAOS   Network: day23-track2-observability-lab_obs
+[2026-05-11T12:27:31] CHAOS   Disconnected. up{job=day23-app} == 0 sau scrape interval tiếp theo
+[2026-05-11T12:27:31] CHAOS   Nếu alert patch đã deploy: TargetDown fires trong ~80s
+[2026-05-11T12:27:31] CHAOS   Nếu chưa patch: ServiceDown fires nhưng tên alert misleading
+[2026-05-11T12:27:31] CHAOS   Restore: bash bonus/chaos/03-throttle-prometheus.sh --restore
+[2026-05-11T12:31:21] ACTION  Reconnecting day23-prometheus to day23-track2-observability-lab_obs
+[2026-05-11T12:31:22] ACTION  Restored. up{job=day23-app} sẽ về 1 trong ~30s
+[2026-05-11T12:34:21] CHAOS   === Incident 03 START ===
+[2026-05-11T12:34:21] CHAOS   Failure mode: network partition Prometheus <-> app
+[2026-05-11T12:34:21] CHAOS   Network: day23-track2-observability-lab_obs
+[2026-05-11T12:34:22] CHAOS   Disconnected. up{job=day23-app} == 0 sau scrape interval tiếp theo
+[2026-05-11T12:34:22] CHAOS   Nếu alert patch đã deploy: TargetDown fires trong ~80s
+[2026-05-11T12:34:22] CHAOS   Nếu chưa patch: ServiceDown fires nhưng tên alert misleading
+[2026-05-11T12:34:22] CHAOS   Restore: bash bonus/chaos/03-throttle-prometheus.sh --restore
+[2026-05-11T12:37:42] ACTION  Reconnecting day23-prometheus to day23-track2-observability-lab_obs
+[2026-05-11T12:37:42] ACTION  Restored. up{job=day23-app} sẽ về 1 trong ~30s
+[2026-05-11T12:38:27] CHAOS   === Incident 03 START ===
+[2026-05-11T12:38:27] CHAOS   Failure mode: network partition Prometheus <-> app
+[2026-05-11T12:38:27] CHAOS   Network: day23-track2-observability-lab_obs
+[2026-05-11T12:38:27] CHAOS   Disconnected. up{job=day23-app} == 0 sau scrape interval tiếp theo
+[2026-05-11T12:38:27] CHAOS   Nếu alert patch đã deploy: TargetDown fires trong ~80s
+[2026-05-11T12:38:27] CHAOS   Nếu chưa patch: ServiceDown fires nhưng tên alert misleading
+[2026-05-11T12:38:27] CHAOS   Restore: bash bonus/chaos/03-throttle-prometheus.sh --restore
+[2026-05-11T12:42:32] ACTION  Reconnecting day23-prometheus to day23-track2-observability-lab_obs
+[2026-05-11T12:42:32] ACTION  Restored. up{job=day23-app} sẽ về 1 trong ~30s
+[2026-05-11T12:42:36] CHAOS   === Incident 03 START ===
+[2026-05-11T12:42:36] CHAOS   Failure mode: network partition Prometheus <-> app
+[2026-05-11T12:42:36] CHAOS   Network: day23-track2-observability-lab_obs
+[2026-05-11T12:42:34] CHAOS   Disconnected. up{job=day23-app} == 0 sau scrape interval tiếp theo
+[2026-05-11T12:42:34] CHAOS   Nếu alert patch đã deploy: TargetDown fires trong ~80s
+[2026-05-11T12:42:34] CHAOS   Nếu chưa patch: ServiceDown fires nhưng tên alert misleading
+[2026-05-11T12:42:34] CHAOS   Restore: bash bonus/chaos/03-throttle-prometheus.sh --restore
+[2026-05-11T12:46:47] ACTION  Reconnecting day23-prometheus to day23-track2-observability-lab_obs
+[2026-05-11T12:46:47] ACTION  Restored. up{job=day23-app} sẽ về 1 trong ~30s
+[2026-05-11T12:48:06] CHAOS   === Incident 03 START ===
+[2026-05-11T12:48:06] CHAOS   Failure mode: network partition Prometheus <-> app
+[2026-05-11T12:48:06] CHAOS   Network: day23-track2-observability-lab_obs
+[2026-05-11T12:48:07] CHAOS   Disconnected. up{job=day23-app} == 0 sau scrape interval tiếp theo
+[2026-05-11T12:48:07] CHAOS   Nếu alert patch đã deploy: TargetDown fires trong ~80s
+[2026-05-11T12:48:07] CHAOS   Nếu chưa patch: ServiceDown fires nhưng tên alert misleading
+[2026-05-11T12:48:07] CHAOS   Restore: bash bonus/chaos/03-throttle-prometheus.sh --restore
+[2026-05-11T12:52:16] ACTION  Reconnecting day23-prometheus to day23-track2-observability-lab_obs
+[2026-05-11T12:52:16] ACTION  Restored. up{job=day23-app} sẽ về 1 trong ~30s
+[2026-05-11T12:52:55] ACTION  Reconnecting day23-prometheus to day23-track2-observability-lab_obs
+[2026-05-11T12:52:55] ACTION  Restored. up{job=day23-app} sẽ về 1 trong ~30s
+[2026-05-11T12:53:59] CHAOS   === Incident 03 START ===
+[2026-05-11T12:53:59] CHAOS   Failure mode: network partition Prometheus <-> app
+[2026-05-11T12:53:59] CHAOS   Network: day23-track2-observability-lab_obs
+[2026-05-11T12:53:59] CHAOS   Disconnected. up{job=day23-app} == 0 sau scrape interval tiếp theo
+[2026-05-11T12:53:59] CHAOS   Nếu alert patch đã deploy: TargetDown fires trong ~80s
+[2026-05-11T12:53:59] CHAOS   Nếu chưa patch: ServiceDown fires nhưng tên alert misleading
+[2026-05-11T12:53:59] CHAOS   Restore: bash bonus/chaos/03-throttle-prometheus.sh --restore
+[2026-05-11T12:56:54] CHAOS   === Incident 03 START ===
+[2026-05-11T12:56:54] CHAOS   Failure mode: network partition Prometheus <-> app
+[2026-05-11T12:56:54] CHAOS   Network: day23-track2-observability-lab_obs
+[2026-05-11T12:57:02] ACTION  Reconnecting day23-prometheus to day23-track2-observability-lab_obs
+[2026-05-11T12:57:02] ACTION  Restored. up{job=day23-app} sẽ về 1 trong ~30s

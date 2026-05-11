@@ -67,11 +67,18 @@ def kl_divergence(reference: np.ndarray, current: np.ndarray, bins: int = 20) ->
 
 def main() -> int:
     rng = np.random.default_rng(seed=42)
-    reference = synth_dataset(rng, shifted=False)
-    current = synth_dataset(rng, shifted=True)
     DATA_DIR.mkdir(exist_ok=True)
-    reference.to_parquet(DATA_DIR / "reference.parquet")
-    current.to_parquet(DATA_DIR / "current.parquet")
+    if not (DATA_DIR / "reference.parquet").exists():
+        reference = synth_dataset(rng, shifted=False)
+        reference.to_parquet(DATA_DIR / "reference.parquet")
+    else:
+        reference = pd.read_parquet(DATA_DIR / "reference.parquet")
+
+    if not (DATA_DIR / "current.parquet").exists():
+        current = synth_dataset(rng, shifted=True)
+        current.to_parquet(DATA_DIR / "current.parquet")
+    else:
+        current = pd.read_parquet(DATA_DIR / "current.parquet")
 
     summary: dict[str, dict[str, float]] = {}
     for col in reference.columns:

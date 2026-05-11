@@ -1,0 +1,37 @@
+[2026-05-11T12:12:59] CHAOS   === Incident 02 START ===
+[2026-05-11T12:12:59] CHAOS   Failure mode: reference dataset replaced with +3sigma shifted distribution
+[2026-05-11T12:14:30] CHAOS   === Incident 02 START ===
+[2026-05-11T12:14:30] CHAOS   Failure mode: reference dataset replaced with +3sigma shifted distribution
+[2026-05-11T12:14:30] CHAOS   Backup created
+[2026-05-11T12:14:32] CHAOS   Poisoned. Running drift detect script...
+[2026-05-11T12:14:38] OUTPUT prompt_length        PSI=3.461  KL=1.798  KS=0.702  drift=yes
+[2026-05-11T12:14:38] OUTPUT embedding_norm       PSI=0.019  KL=0.032  KS=0.052  drift=no
+[2026-05-11T12:14:38] OUTPUT response_length      PSI=0.016  KL=0.018  KS=0.056  drift=no
+[2026-05-11T12:14:38] OUTPUT response_quality     PSI=8.849  KL=13.501  KS=0.941  drift=yes
+[2026-05-11T12:14:38] OUTPUT evidently not installed; skipping HTML report. Install with: pip install evidently
+[2026-05-11T12:14:38] CHAOS   Restore: bash bonus/chaos/02-poison-drift.sh --restore
+[2026-05-11T12:16:59] CHAOS   === Incident 02 START ===
+[2026-05-11T12:16:59] CHAOS   Failure mode: reference dataset replaced with +3sigma shifted distribution
+[2026-05-11T12:16:59] CHAOS   Poisoned. Running drift detect script...
+[2026-05-11T12:17:18] OUTPUT prompt_length        PSI=3.461  KL=1.798  KS=0.702  drift=yes
+[2026-05-11T12:17:18] OUTPUT embedding_norm       PSI=0.019  KL=0.032  KS=0.052  drift=no
+[2026-05-11T12:17:18] OUTPUT response_length      PSI=0.016  KL=0.018  KS=0.056  drift=no
+[2026-05-11T12:17:18] OUTPUT response_quality     PSI=8.849  KL=13.501  KS=0.941  drift=yes
+[2026-05-11T12:17:18] OUTPUT Wrote: /home/stephenhoang/VinUniProject/Day23-Track2-Observability-Lab/04-drift-detection/reports/drift-report.html
+[2026-05-11T12:17:18] CHAOS   Restore: bash bonus/chaos/02-poison-drift.sh --restore
+[2026-05-11T12:21:05] CHAOS   === Incident 02 START ===
+[2026-05-11T12:21:05] CHAOS   Failure mode: reference dataset replaced with +3sigma shifted distribution
+[2026-05-11T12:21:05] CHAOS   Poisoned. Running drift detect script...
+[2026-05-11T12:21:09] OUTPUT prompt_length        PSI=2.926  KL=1.561  KS=0.666  drift=yes
+[2026-05-11T12:21:09] OUTPUT embedding_norm       PSI=12.017  KL=20.443  KS=1.000  drift=yes
+[2026-05-11T12:21:09] OUTPUT response_length      PSI=0.034  KL=0.027  KS=0.092  drift=no
+[2026-05-11T12:21:09] OUTPUT response_quality     PSI=12.362  KL=20.396  KS=1.000  drift=yes
+[2026-05-11T12:21:09] OUTPUT Wrote: /home/stephenhoang/VinUniProject/Day23-Track2-Observability-Lab/04-drift-detection/reports/drift-report.html
+[2026-05-11T12:21:09] CHAOS   Restore: bash bonus/chaos/02-poison-drift.sh --restore
+[2026-05-11T12:25:56] ACTION  Restoring reference dataset
+[2026-05-11T12:26:01] OUTPUT prompt_length        PSI=3.461  KL=1.798  KS=0.702  drift=yes
+[2026-05-11T12:26:01] OUTPUT embedding_norm       PSI=0.019  KL=0.032  KS=0.052  drift=no
+[2026-05-11T12:26:01] OUTPUT response_length      PSI=0.016  KL=0.018  KS=0.056  drift=no
+[2026-05-11T12:26:01] OUTPUT response_quality     PSI=8.849  KL=13.501  KS=0.941  drift=yes
+[2026-05-11T12:26:01] OUTPUT Wrote: /home/stephenhoang/VinUniProject/Day23-Track2-Observability-Lab/04-drift-detection/reports/drift-report.html
+[2026-05-11T12:26:02] ACTION  Restore complete

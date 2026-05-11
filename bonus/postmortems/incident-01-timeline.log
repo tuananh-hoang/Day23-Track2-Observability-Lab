@@ -1,0 +1,12 @@
+[2026-05-11T11:51:32] CHAOS   === Incident 01 START ===
+[2026-05-11T11:51:32] CHAOS   Target: day23-app | Failure mode: abrupt container stop
+[2026-05-11T11:51:32] CHAOS   Stopping container now...
+[2026-05-11T11:55:41] CHAOS   === Incident 01 START ===
+[2026-05-11T11:55:41] CHAOS   Target: day23-app (service=app) | Failure mode: abrupt container stop
+[2026-05-11T11:55:41] CHAOS   Stopping container now...
+[2026-05-11T11:55:43] CHAOS   Container stopped. ServiceDown alert fires trong ~60–90s
+[2026-05-11T11:55:43] CHAOS   Restore: bash bonus/chaos/01-kill-app.sh --restore
+[2026-05-11T12:00:32] ACTION  Restoring app
+[2026-05-11T12:00:33] ACTION  Restore complete — watch Alertmanager for RESOLVED
+[2026-05-11T12:10:06] ACTION  Restoring app
+[2026-05-11T12:10:06] ACTION  Restore complete — watch Alertmanager for RESOLVED
