@@ -25,7 +25,13 @@ from instrumentation import (
 )
 from inference import simulate_inference, simulate_gpu_load
 import os
+import pyroscope
 from langfuse import Langfuse
+
+pyroscope.configure(
+  application_name="day23-app",
+  server_address="http://day23-pyroscope:4040",
+)
 
 langfuse = Langfuse(
   public_key=os.environ.get("LANGFUSE_PUBLIC_KEY"),

@@ -148,6 +148,14 @@ services:
       - "127.0.0.1:5432:5432"
     networks: [obs]
 
+  pyroscope:
+    image: grafana/pyroscope:latest
+    container_name: day23-pyroscope
+    ports:
+      - "127.0.0.1:4040:4040"
+    command: ["server"]
+    networks: [obs]
+
 volumes:
   prom-data:
   grafana-data:
